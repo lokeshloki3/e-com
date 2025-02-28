@@ -1,10 +1,22 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import Navbar from "./components/Navbar"
+import Banner from './components/Banner'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
 
 function App() {
 
   return (
-    <>
-      <h1 className='bg-red-500'>Vite + React</h1>
-    </>
+    <BrowserRouter>
+      <Navbar />
+      <Banner />
+      <Routes>
+        <Route path="/" element={<Signup />}/>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/dashboard" element={<Dashboard />}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
