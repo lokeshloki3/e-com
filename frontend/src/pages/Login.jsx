@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios';
 
 const Login = () => {
 
@@ -18,6 +19,19 @@ const Login = () => {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const baseUrl = import.meta.env.VITE_API_URL;
+
+      const res = await axios.post(`${baseUrl}/api/auth/login`, formData);
+      localStorage.setItem('token', res.data.token);
+      window.location.href = '/protected';
+    } catch (err) {
+      alert(err.response.data.error);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col rounded">
@@ -30,7 +44,7 @@ const Login = () => {
             The next gen business marketplace
           </div>
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mt-6">Email</div>
             <div className="flex flex-col mt-2">
               <input
@@ -75,7 +89,7 @@ const Login = () => {
           <div className="flex gap-3 self-center mt-8 mb-0 max-w-full w-[261px]">
             <div>Don't have an Account? </div>
             <Link
-              to="/signup"
+              to="/"
               className="self-start font-medium"
             >
               Sign up
