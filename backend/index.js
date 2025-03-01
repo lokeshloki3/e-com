@@ -21,8 +21,6 @@ const cors = require('cors');
 
 loadCategories();
 
-const cors = require('cors');
-
 app.use(cors({
    origin: ['http://localhost:5173', 'https://e-com-nine-tau.vercel.app'],
    credentials: true

@@ -3,7 +3,7 @@ const Category = require('../models/Category');
 
 const loadCategories = async () => {
     try {
-        await Category.deleteMany({}); // Clear existing entries if required
+        // await Category.deleteMany({}); // Clear existing entries if required
 
         // Create 100 fake categories
         const categories = Array.from({ length: 100 }, () => ({
