@@ -1,22 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { CiSearch, CiShoppingCart } from 'react-icons/ci';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+  const [userName, setUserName] = useState("John");
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        if (payload.name) {
+          setUserName(payload.name);
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex flex-col pb-4 bg-white">
       <div className="flex flex-col justify-center items-end px-8 pt-3 w-full text-xs bg-white">
         <div className="flex gap-5 items-center">
           <p>Help</p>
           <p>Orders & Returns</p>
-          <p>Hi, John</p>
+          <p>Hi, {userName}</p>
         </div>
       </div>
 
       <div className="flex justify-between items-center px-8 mt-2 w-full">
-        <p className="text-3xl font-bold">
-          ECOMMERCE
-        </p>
+        <p className="text-3xl font-bold">ECOMMERCE</p>
         <div className="flex gap-14 mt-4 font-semibold">
           <p>Categories</p>
           <p>Sale</p>
@@ -25,9 +39,9 @@ const Navbar = () => {
           <p>Trending</p>
         </div>
         <div className="flex gap-8 mt-2.5">
-          <CiSearch className='text-2xl' />
+          <CiSearch className="text-2xl" />
           <Link to="/cart">
-            <CiShoppingCart className='text-2xl' />
+            <CiShoppingCart className="text-2xl" />
           </Link>
         </div>
       </div>
@@ -35,4 +49,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar
+export default Navbar;

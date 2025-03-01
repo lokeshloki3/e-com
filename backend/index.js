@@ -12,18 +12,21 @@ const connectWithDb = require("./config/database");
 connectWithDb();
 
 // Mount
-const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const interestRoutes = require('./routes/interestRoutes');
+const loadCategories = require("./utils/loadCategories");
 const path = require('path');
 const cors = require('cors');
+
+loadCategories();
 
 app.use(cors({
    origin: 'http://localhost:5173', // Allow requests from the frontend
 }));
 const _dirname = path.resolve();
 
-app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/interests', interestRoutes);
 app.use(express.static(path.join(_dirname,"/frontend/dist")))

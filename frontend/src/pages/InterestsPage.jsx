@@ -9,10 +9,13 @@ const InterestsPage = () => {
     useEffect(() => {
         const fetchInterests = async () => {
             try {
-                const res = await axios.get('/api/interests', {
+                const baseUrl = import.meta.env.VITE_API_URL;
+
+                const res = await axios.get(`${baseUrl}/api/interests`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 setInterests(res.data);
+                console.log("Fetched interests:", res.data);
             } catch (err) {
                 console.error('Failed to fetch interests:', err);
             }
@@ -26,9 +29,9 @@ const InterestsPage = () => {
     };
 
     return (
-        <div className="mt-16 flex items-center justify-center min-h-screen bg-gray-100 overflow-auto">
-            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md max-h-[75vh] ">
-                <h2 className="text-xl font-bold mb-2 text-center">Your Selected Interests</h2>
+        <div className="flex flex-col rounded">
+            <div className="flex flex-col self-center mt-8 mb-6 px-16 py-6 max-w-full rounded-3xl border border-solid border-[#C1C1C1] w-[576px]">
+                <div className="text-center text-3xl font-semibold">Your Selected Interests</div>
                 <ul className="space-y-3 mb-6">
                     {interests.map((interest) => (
                         <li key={interest._id} className="text-gray-700">
@@ -37,11 +40,11 @@ const InterestsPage = () => {
                     ))}
                 </ul>
 
-                <button 
-                    onClick={resetInterests} 
-                    className="w-full bg-red-500 text-white p-2 rounded"
+                <button
+                    onClick={resetInterests}
+                    className="mt-6 w-full bg-black text-white p-2 rounded"
                 >
-                    Reset Interests
+                    Back to Categories
                 </button>
             </div>
         </div>

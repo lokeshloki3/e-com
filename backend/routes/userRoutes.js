@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 //Import controller
-const { register, login, verifyEmail } = require('../controllers/authController');
+const { register, login, verifyEmail } = require('../controllers/userController');
 
 //Mapping create
 router.post('/signup', register);

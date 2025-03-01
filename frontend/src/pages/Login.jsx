@@ -24,7 +24,7 @@ const Login = () => {
     try {
       const baseUrl = import.meta.env.VITE_API_URL;
 
-      const res = await axios.post(`${baseUrl}/api/auth/login`, formData);
+      const res = await axios.post(`${baseUrl}/api/user/login`, formData);
       localStorage.setItem('token', res.data.token);
       window.location.href = '/protected';
     } catch (err) {

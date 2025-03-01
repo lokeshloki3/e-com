@@ -6,7 +6,8 @@ import Login from './pages/Login'
 import VerifyEmail from "./pages/VerifyEmail"
 import PrivateRoute from "./pages/PrivateRoute"
 import ProtectedPage from "./pages/ProtectedPage"
-import InterestsPage from "./pages/InterestPage"
+import InterestsPage from "./pages/InterestsPage"
+import Logout from "./pages/Logout"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/logout" element={<Logout />} />
 
         <Route
           path="/protected"

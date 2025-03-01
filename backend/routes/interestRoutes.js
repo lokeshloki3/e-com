@@ -3,7 +3,7 @@ const router = express.Router();
 const UserInterest = require('../models/UserInterest');
 const { authMiddleware } = require('../middleware/authMiddleware');
 
-// Save selected categories for the user
+// Save selected categories for user
 router.post('/', authMiddleware, async (req, res) => {
     const userId = req.userId; // Extracted from auth middleware
     const { categoryIds } = req.body;
@@ -11,7 +11,7 @@ router.post('/', authMiddleware, async (req, res) => {
     try {
         let userInterest = await UserInterest.findOne({ userId });
 
-        // If the user already has interests, update them; otherwise, create new
+        // If user has interests, update otherwise create new
         if (userInterest) {
             userInterest.categories = categoryIds;
         } else {
@@ -28,7 +28,7 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 });
 
-// Retrieve selected categories for the user
+// Retrieve selected categories for user
 router.get('/', authMiddleware, async (req, res) => {
     const userId = req.userId;
 
@@ -37,6 +37,8 @@ router.get('/', authMiddleware, async (req, res) => {
         if (!userInterest) {
             return res.status(404).json({ error: 'No interests found' });
         }
+        
+        console.log("User interests from DB:", userInterest);
         res.status(200).json(userInterest.categories);
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve interests' });

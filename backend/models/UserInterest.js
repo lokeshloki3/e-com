@@ -4,7 +4,7 @@ const userInterestSchema = new mongoose.Schema({
     userId: {type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    Categories: [{type: mongoose.Schema.Types.ObjectId,
+    categories: [{type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
     }]
 })

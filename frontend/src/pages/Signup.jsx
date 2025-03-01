@@ -20,8 +20,8 @@ const Signup = () => {
     try {
       const baseUrl = import.meta.env.VITE_API_URL;
 
-      await axios.post(`${baseUrl}/api/auth/signup`, formData);
-      // Redirect to verify-email page and pass the email in the state
+      await axios.post(`${baseUrl}/api/user/signup`, formData);
+      
       navigate('/verify-email', { state: { email: formData.email } });
     } catch (err) {
       console.log("Error during signup");

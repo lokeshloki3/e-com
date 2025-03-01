@@ -3,12 +3,18 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const { generateToken } = require('../utils/generateToken');
 
 exports.register = async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
-        const verificationCode = crypto.randomBytes(3).toString('hex').toUpperCase();
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Email already exists. Please use a different email.' });
+        }
+        
+        const verificationCode = crypto.randomBytes(4).toString('hex').toUpperCase();
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -32,7 +38,7 @@ exports.register = async (req, res) => {
 
         await transporter.sendMail(mailOptions);
 
-        res.status(201).json({ message: 'Registration successful. Please check your email for the verification code.' });
+        res.status(201).json({ message: 'Registration successful. Check email for the verification code.' });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -40,34 +46,35 @@ exports.register = async (req, res) => {
 
 
 exports.verifyEmail = async (req, res) => {
-  const { email, verificationCode } = req.body;
+    const { email, verificationCode } = req.body;
 
-  try {
-      const user = await User.findOne({ email });
+    try {
+        const user = await User.findOne({ email });
 
-      if (!user) {
-          return res.status(400).json({ error: 'User not found' });
-      }
+        if (!user) {
+            return res.status(400).json({ error: 'User not found' });
+        }
 
-      if (user.isVerified) {
-          return res.status(400).json({ error: 'User already verified' });
-      }
+        if (user.isVerified) {
+            return res.status(400).json({ error: 'User already verified' });
+        }
 
-      if (user.verificationCode !== verificationCode) {
-          return res.status(400).json({ error: 'Invalid verification code' });
-      }
+        if (user.verificationCode !== verificationCode) {
+            return res.status(400).json({ error: 'Invalid verification code' });
+        }
 
-      user.isVerified = true;
-      user.verificationCode = undefined;
-      await user.save();
+        user.isVerified = true;
+        user.verificationCode = undefined;
+        await user.save();
 
-      res.status(200).json({ message: 'Email successfully verified' });
-  } catch (error) {
-      res.status(400).json({ error: error.message });
-  }
+        const token = generateToken(user);
+        res.cookie("token", token, { httpOnly: true });
+        res.status(200).json({ message: 'Email successfully verified', token });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 };
 
-// Login function with check for email verification
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -81,8 +88,10 @@ exports.login = async (req, res) => {
             return res.status(400).json({ error: 'Please verify your email before logging in' });
         }
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        const token = generateToken(user);
+        res.cookie("token", token, { httpOnly: true });
+        res.json({ message: "Logged in", token });
+
     } catch (error) {
         res.status(500).json({ error: 'Failed to login' });
     }

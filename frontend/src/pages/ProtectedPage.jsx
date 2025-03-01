@@ -6,21 +6,44 @@ const ProtectedPage = () => {
     const [categories, setCategories] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const res = await axios.get(`/api/categories?page=${page}`, {
+                const baseUrl = import.meta.env.VITE_API_URL;
+
+                // Fetch all categories
+                const res = await axios.get(`${baseUrl}/api/categories?page=${page}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
-                setCategories(res.data);
+                setCategories(res.data.categories);
+                setTotalPages(res.data.totalPages);
             } catch (err) {
-                console.error(err);
+                console.error('Failed to fetch categories:', err);
             }
         };
+
+        const fetchUserInterests = async () => {
+            try {
+                const baseUrl = import.meta.env.VITE_API_URL;
+
+                // Fetch user's selected interests
+                const res = await axios.get(`${baseUrl}/api/interests`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                // Extract category IDs and pre-select them
+                setSelectedCategories(res.data.map(interest => interest._id));
+            } catch (err) {
+                console.error('Failed to fetch interests:', err);
+            }
+        };
+
         fetchCategories();
+        fetchUserInterests();
     }, [page]);
 
     const handleSelect = (category) => {
@@ -35,7 +58,9 @@ const ProtectedPage = () => {
 
     const saveInterests = async () => {
         try {
-            await axios.post('/api/interests', { categoryIds: selectedCategories }, {
+            const baseUrl = import.meta.env.VITE_API_URL;
+
+            await axios.post(`${baseUrl}/api/interests`, { categoryIds: selectedCategories }, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             setMessage("Interests saved successfully!");
@@ -47,10 +72,16 @@ const ProtectedPage = () => {
     };
 
     return (
-        <div className="mt-16 flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md max-h-[75vh] ">
-                <h2 className="text-xl font-bold mb-2 text-center">Please mark your interests!</h2>
-                <p className="text-center text-gray-500 mb-4">We will keep you notified.</p>
+        <div className="flex flex-col rounded">
+            <div className="flex flex-col self-center mt-8 mb-6 px-16 py-6 max-w-full rounded-3xl border border-solid border-[#C1C1C1] w-[576px]">
+                <div className="text-center text-3xl font-semibold">
+                    Please mark your interests!
+                </div>
+                <div className="text-center mt-6">
+                    We will keep you notified.
+                </div>
+
+                <div className="h-px bg-gray-200 mb-6" />
 
                 <h3 className="text-lg font-semibold mb-4">My saved interests!</h3>
                 <ul className="space-y-3">
@@ -84,7 +115,7 @@ const ProtectedPage = () => {
                     >
                         &lt;&lt;
                     </button>
-                    {Array.from({ length: 7 }, (_, i) => (
+                    {Array.from({ length: totalPages }, (_, i) => (
                         <button
                             key={i}
                             onClick={() => setPage(i + 1)}
@@ -92,9 +123,13 @@ const ProtectedPage = () => {
                         >
                             {i + 1}
                         </button>
-                    ))}
+                    )).slice(
+                        Math.max(0, Math.min(page - 4, totalPages - 7)),
+                        Math.max(7, Math.min(page + 3, totalPages))
+                    )}
                     <button
                         onClick={() => setPage(page + 1)}
+                        disabled={page === totalPages}
                         className="px-2"
                     >
                         &gt;&gt;
