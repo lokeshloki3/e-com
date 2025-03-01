@@ -10,17 +10,11 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     password: String,
-    inVerified: {
+    isVerified: {
         type: Boolean,
         default: false
     },
     verificationCode: String,
-})
-
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
 })
 
 // Export

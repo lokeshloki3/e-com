@@ -20,13 +20,14 @@ const VerifyEmail = () => {
         setSuccess('');
 
         try {
-            const res = await axios.post('api/auth/verify-email', {
+            const baseUrl = import.meta.env.VITE_API_URL;
+
+            const res = await axios.post(`${baseUrl}/api/auth/verify-email`, {
                 email,
                 verificationCode: code,
             });
             setSuccess(res.data.message);
 
-            // Redirect after a short delay
             setTimeout(() => {
                 navigate('/protected');
             }, 1500);

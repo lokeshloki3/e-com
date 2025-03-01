@@ -8,21 +8,19 @@ exports.register = async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
-        // Generate a random verification code
-        const verificationCode = crypto.randomBytes(3).toString('hex').toUpperCase(); // e.g., 'A1B2C3'
+        const verificationCode = crypto.randomBytes(3).toString('hex').toUpperCase();
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create the user in the database with the verification code
         const user = await User.create({ name, email, password: hashedPassword, verificationCode });
 
-        // Send the verification email
         const transporter = nodemailer.createTransport({
-            service: 'Gmail',
+            service: 'gmail',
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
             },
+            secure: true,
         });
 
         const mailOptions = {
@@ -43,7 +41,6 @@ exports.register = async (req, res) => {
 
 exports.verifyEmail = async (req, res) => {
   const { email, verificationCode } = req.body;
-  console.log(email);
 
   try {
       const user = await User.findOne({ email });
@@ -60,20 +57,15 @@ exports.verifyEmail = async (req, res) => {
           return res.status(400).json({ error: 'Invalid verification code' });
       }
 
-      // Mark user as verified and clear the verification code
       user.isVerified = true;
       user.verificationCode = undefined;
       await user.save();
-      console.log("ho rha hai");
-      
 
       res.status(200).json({ message: 'Email successfully verified' });
   } catch (error) {
       res.status(400).json({ error: error.message });
   }
 };
-
-
 
 // Login function with check for email verification
 exports.login = async (req, res) => {
