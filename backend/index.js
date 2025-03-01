@@ -21,18 +21,22 @@ const cors = require('cors');
 
 loadCategories();
 
+const cors = require('cors');
+
 app.use(cors({
-   origin: 'http://localhost:5173', // Allow requests from the frontend
+   origin: ['http://localhost:5173', 'https://e-com-nine-tau.vercel.app'],
+   credentials: true
 }));
-const _dirname = path.resolve();
+
+// const _dirname = path.resolve();
 
 app.use('/api/user', userRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/interests', interestRoutes);
-app.use(express.static(path.join(_dirname,"/frontend/dist")))
-app.get('*',(_,res)=>{
-    res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
-})
+// app.use(express.static(path.join(_dirname,"/frontend/dist")))
+// app.get('*',(_,res)=>{
+//     res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
+// })
 
 //start server
 app.listen(PORT, () => {
