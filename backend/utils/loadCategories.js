@@ -32,7 +32,7 @@ const loadCategories = async () => {
             await new Promise((resolve) => mongoose.connection.once("open", resolve));
         }
 
-        console.log("✅ Database is ready. Seeding categories...");
+        console.log("Database is ready. Seeding categories...");
 
         await Category.deleteMany({}); // Clear existing entries if required
 
