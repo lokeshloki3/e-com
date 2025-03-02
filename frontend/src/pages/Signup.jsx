@@ -20,7 +20,7 @@ const Signup = () => {
     try {
       const baseUrl = import.meta.env.VITE_API_URL;
 
-      await axios.post(`${baseUrl}api/user/signup`, formData, {
+      await axios.post(`${baseUrl}/api/user/signup`, formData, {
         headers: {
           "Content-Type": "application/json"
         },
