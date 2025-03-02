@@ -100,7 +100,7 @@ const ProtectedPage = () => {
 
                 <button
                     onClick={saveInterests}
-                    className="mt-6 w-full bg-black text-white p-2 rounded"
+                    className="mt-6 w-full bg-black text-white p-2 rounded hover:cursor-pointer"
                 >
                     Save Interests
                 </button>
@@ -111,7 +111,7 @@ const ProtectedPage = () => {
                     <button
                         onClick={() => setPage(page - 1)}
                         disabled={page === 1}
-                        className="px-2"
+                        className="px-2 hover:cursor-pointer disabled:cursor-not-allowed"
                     >
                         &lt;&lt;
                     </button>
@@ -130,7 +130,7 @@ const ProtectedPage = () => {
                     <button
                         onClick={() => setPage(page + 1)}
                         disabled={page === totalPages}
-                        className="px-2"
+                        className="px-2 hover:cursor-pointer disabled:cursor-not-allowed"
                     >
                         &gt;&gt;
                     </button>

@@ -82,7 +82,7 @@ const Signup = () => {
 
           <button
             type="submit"
-            className="w-full flex items-center justify-center text-white px-8 py-4 mt-10 font-medium bg-black rounded-md border border-black border-solid h-14"
+            className="w-full flex items-center justify-center text-white px-8 py-4 mt-10 font-medium bg-black rounded-md border border-black border-solid h-14 hover:cursor-pointer"
           >
             CREATE ACCOUNT
           </button>
@@ -92,7 +92,7 @@ const Signup = () => {
           <div>Have an Account?</div>
           <Link
             to="/login"
-            className="self-start font-medium"
+            className="self-start font-medium hover:cursor-pointer"
           >
             Login
           </Link>

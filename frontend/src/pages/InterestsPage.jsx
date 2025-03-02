@@ -42,7 +42,7 @@ const InterestsPage = () => {
 
                 <button
                     onClick={resetInterests}
-                    className="mt-6 w-full bg-black text-white p-2 rounded"
+                    className="mt-6 w-full bg-black text-white p-2 rounded hover:cursor-pointer"
                 >
                     Back to Categories
                 </button>

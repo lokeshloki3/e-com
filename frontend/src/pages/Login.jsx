@@ -80,7 +80,7 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center text-white px-8 py-4 mt-10 font-medium bg-black rounded-md border border-black border-solid h-14"
+              className="w-full flex items-center justify-center text-white px-8 py-4 mt-10 font-medium bg-black rounded-md border border-black border-solid h-14 hover:cursor-pointer"
             >
               Login
             </button>
@@ -90,7 +90,7 @@ const Login = () => {
             <div>Don't have an Account? </div>
             <Link
               to="/"
-              className="self-start font-medium"
+              className="self-start font-medium hover:cursor-pointer"
             >
               Sign up
             </Link>

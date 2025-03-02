@@ -92,7 +92,7 @@ const VerifyEmail = () => {
                     <button
                         type="submit"
                         disabled={code.some(digit => digit === '')}
-                        className="w-full flex items-center justify-center text-white px-8 py-4 mt-10 font-medium bg-black rounded-md border border-black border-solid h-14"
+                        className="w-full flex items-center justify-center text-white px-8 py-4 mt-10 font-medium bg-black rounded-md border border-black border-solid h-14 hover:cursor-pointer disabled:cursor-not-allowed"
                     >
                         {success ? 'Verified' : 'Verify'}
                     </button>
