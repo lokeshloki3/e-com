@@ -20,8 +20,13 @@ const Signup = () => {
     try {
       const baseUrl = import.meta.env.VITE_API_URL;
 
-      await axios.post(`${baseUrl}/api/user/signup`, formData);
-      
+      await axios.post(`${baseUrl}/api/user/signup`, formData, {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        withCredentials: true // Ensures cookies/session data are sent if needed
+      });
+
       navigate('/verify-email', { state: { email: formData.email } });
     } catch (err) {
       console.log("Error during signup");

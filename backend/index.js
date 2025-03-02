@@ -4,6 +4,13 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
 
+const cors = require('cors');
+app.use(cors({
+   // origin: 'http://localhost:5173',
+   origin: 'https://e-com-nine-tau.vercel.app',
+   credentials: true
+}));
+
 //middleware
 app.use(express.json());
 
@@ -17,15 +24,8 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const interestRoutes = require('./routes/interestRoutes');
 const loadCategories = require("./utils/loadCategories");
 const path = require('path');
-const cors = require('cors');
 
 loadCategories();
-
-app.use(cors({
-   // origin: ['http://localhost:5173', 'https://e-com-nine-tau.vercel.app'],
-   origin: 'https://e-com-nine-tau.vercel.app',
-   credentials: true
-}));
 
 // const _dirname = path.resolve();
 
