@@ -1,0 +1,8 @@
+{
+    "rewrites": [
+      { "source": "/protected", "destination": "/index.html" },
+      { "source": "/interests", "destination": "/index.html" },
+      { "source": "/(.*)", "destination": "/index.html" }
+    ]
+  }
+  
